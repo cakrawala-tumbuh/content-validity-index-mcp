@@ -6,6 +6,17 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id/1.1.0/) dan
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-06-05
+
+### Diperbaiki
+- Teruskan token Authentik **upstream** ke backend pada alur OAuth Claude.ai.
+  FastMCP `OAuthProxy` memberi klien *reference token* buatannya sendiri (token
+  swap) — bukan token Authentik — sehingga MCP yang meneruskan header
+  `Authorization` mentah membuat backend menolak dengan 401 "Token tidak valid".
+  Token kini diambil dari `get_access_token().token` (token Authentik upstream
+  hasil swap, JWT RS256 yang dapat diverifikasi backend). Klien API key statis
+  diabaikan agar tidak salah diteruskan.
+
 ## [0.1.0] - 2026-06-04
 
 ### Ditambahkan

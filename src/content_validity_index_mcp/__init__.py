@@ -12,4 +12,4 @@ backend, lalu meneruskan token user (pass-through) ke backend.
 dinamis oleh `pyproject.toml` (`[tool.hatch.version]`).
 """
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
