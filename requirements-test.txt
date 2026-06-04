@@ -1,0 +1,7 @@
+# Tooling test (linter + unit) dengan versi DIPIN agar lokal == CI.
+# Lihat skill automated-test / prinsip parity: tanpa pin, image bulan depan
+# bisa berbeda dari hari ini sehingga hasil test menyimpang.
+pytest==8.2.0
+pytest-asyncio==0.23.7
+respx==0.23.1
+ruff==0.5.0

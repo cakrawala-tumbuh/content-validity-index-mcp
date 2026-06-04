@@ -1,0 +1,38 @@
+# Satu .dockerignore berlaku untuk SEMUA build pada context ini (Dockerfile &
+# Dockerfile.test). Karena itu JANGAN kecualikan tests/, requirements-test.txt,
+# atau README.md — Dockerfile.test membutuhkannya. Image runtime tetap ramping
+# karena Dockerfile hanya meng-COPY pyproject.toml, README.md, dan src/.
+
+# Virtualenv
+.venv/
+venv/
+env/
+
+# Python bytecode & build artifacts
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Test / cache artifacts
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# VCS & meta
+.git/
+.gitignore
+
+# Secrets & local env
+.env
+*.env
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/

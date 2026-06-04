@@ -1,0 +1,31 @@
+# ── Image khusus automated test (linter + unit) ───────────────────────────────
+# Dibangun & dijalankan HANYA via Makefile (`make test`), baik di lokal maupun
+# di GitHub Actions, sehingga lingkungan identik (parity).
+#
+# Strategi anti-artefak: source di-COPY ke image (bukan bind-mount). Saat
+# `docker run --rm`, semua tulisan (cache pytest/ruff, __pycache__) hidup di
+# container dan ikut terhapus — folder project di host tidak pernah ditulisi.
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# 1) Install dependency runtime dari paket (pyproject sebagai sumber kebenaran).
+#    README.md di-COPY karena direferensikan sebagai `readme` di pyproject.
+COPY pyproject.toml README.md ./
+COPY src/ src/
+RUN python -m pip install --no-cache-dir --upgrade pip "setuptools>=68" wheel \
+    && pip install --no-cache-dir .
+
+# 2) Install tooling test dengan versi dipin.
+COPY requirements-test.txt ./
+RUN pip install --no-cache-dir -r requirements-test.txt
+
+# 3) Masukkan test.
+COPY tests/ tests/
+
+# Env dummy agar tool dapat berjalan tanpa koneksi nyata (di-mock via respx).
+ENV BACKEND_API_BASE_URL=http://backend.cvi-test.local \
+    BACKEND_API_TOKEN=test-token
+
+# Default command = unit test. Makefile meng-override command ini untuk lint.
+CMD ["python", "-m", "pytest", "tests/", "-v"]

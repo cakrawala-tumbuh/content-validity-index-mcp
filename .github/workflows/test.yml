@@ -1,0 +1,20 @@
+name: Automated Test
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  test:
+    name: Lint + Unit Test (via make test, di Docker)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout kode
+        uses: actions/checkout@v4
+
+      # CI tidak menduplikasi langkah lint/unit. Semua logika test ada di
+      # Makefile + Dockerfile.test, dipanggil lewat gate yang sama dengan lokal.
+      - name: Automated test (lint + unit) di Docker
+        run: make test
