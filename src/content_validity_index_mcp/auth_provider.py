@@ -138,6 +138,16 @@ class AuthentikProvider(OAuthProxy):
         expert_group: str = "cvi-expert",
         **kwargs: Any,
     ) -> None:
+        """Bangun endpoint OAuth dari issuer Authentik dan inisialisasi proxy.
+
+        Menurunkan URL authorize/token/jwks/userinfo/end-session dari
+        ``issuer_url`` (lihat
+        [split_issuer][content_validity_index_mcp.auth_provider.split_issuer]),
+        menyiapkan
+        ``JWTVerifier`` (RS256 via JWKS, audience tidak diverifikasi mengikuti
+        backend), lalu memanggil ``OAuthProxy.__init__``. Parameter
+        didokumentasikan pada docstring kelas.
+        """
         base, slug = split_issuer(issuer_url)
 
         authorize_url = f"{base}/application/o/authorize/"
@@ -247,6 +257,10 @@ class BearerApiKeyVerifier(TokenVerifier):
     """
 
     def __init__(self, *, api_key: str) -> None:
+        """Simpan API key statis setelah memastikan nilainya tidak kosong.
+
+        Parameter dan exception didokumentasikan pada docstring kelas.
+        """
         if not api_key or not api_key.strip():
             raise ValueError("api_key tidak boleh kosong")
         self._api_key = api_key
