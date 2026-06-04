@@ -32,11 +32,11 @@ def register(mcp: FastMCP, client: CviApiClient) -> None:
         return unwrap(await client.get("/api/v1/my-assignments", token=token))
 
     @mcp.tool
-    async def list_assignment_ratings(assignment_id: int) -> dict | list:
+    async def list_assignment_ratings(assignment_id: str) -> dict | list:
         """Daftar penilaian (rating) pada sebuah penugasan.
 
         Args:
-            assignment_id: ID numerik penugasan.
+            assignment_id: ID (UUID) penugasan.
 
         Returns:
             List rating pada penugasan, atau dict ``error`` bila gagal.

@@ -6,6 +6,17 @@ Format mengikuti [Keep a Changelog](https://keepachangelog.com/id/1.1.0/) dan
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-06-05
+
+### Diperbaiki
+- Perbaiki tipe parameter ID instrumen/penugasan dari `int` menjadi `str` (UUID)
+  pada tool `get_instrument`, `list_instrument_items`, `list_instrument_domains`,
+  `calculate_cvi`, dan `list_assignment_ratings`. Backend memakai UUID
+  (`String(36)`) sebagai primary key, tetapi tool mendeklarasikan `int` sehingga
+  klien MCP membuang nilai UUID saat validasi (argumen dianggap kosong) dan tool
+  mustahil dipanggil dengan ID asli. Docstring disesuaikan (`ID numerik` →
+  `ID (UUID)`).
+
 ## [0.1.1] - 2026-06-05
 
 ### Diperbaiki

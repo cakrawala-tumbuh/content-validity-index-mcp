@@ -38,25 +38,25 @@ class TestInstrumentTools:
 
     @pytest.mark.asyncio
     async def test_get_instrument(self, respx_mock, base_url):
-        respx_mock.get(f"{base_url}/api/v1/instruments/5").mock(
-            return_value=httpx.Response(200, json={"id": 5, "title": "Skala B"})
+        respx_mock.get(f"{base_url}/api/v1/instruments/inst-5").mock(
+            return_value=httpx.Response(200, json={"id": "inst-5", "title": "Skala B"})
         )
         async with Client(mcp) as client:
-            result = await client.call_tool("get_instrument", {"instrument_id": 5})
-        assert result.data["id"] == 5
+            result = await client.call_tool("get_instrument", {"instrument_id": "inst-5"})
+        assert result.data["id"] == "inst-5"
 
     @pytest.mark.asyncio
     async def test_get_instrument_404_kembalikan_error(self, respx_mock, base_url):
-        respx_mock.get(f"{base_url}/api/v1/instruments/99").mock(
+        respx_mock.get(f"{base_url}/api/v1/instruments/inst-99").mock(
             return_value=httpx.Response(404, text="Not Found")
         )
         async with Client(mcp) as client:
-            result = await client.call_tool("get_instrument", {"instrument_id": 99})
+            result = await client.call_tool("get_instrument", {"instrument_id": "inst-99"})
         assert result.data["status_code"] == 404
 
     @pytest.mark.asyncio
     async def test_list_instrument_domains(self, respx_mock, base_url):
-        respx_mock.get(f"{base_url}/api/v1/instruments/4/domains").mock(
+        respx_mock.get(f"{base_url}/api/v1/instruments/inst-4/domains").mock(
             return_value=httpx.Response(
                 200,
                 json=[
@@ -66,7 +66,7 @@ class TestInstrumentTools:
             )
         )
         async with Client(mcp) as client:
-            result = await client.call_tool("list_instrument_domains", {"instrument_id": 4})
+            result = await client.call_tool("list_instrument_domains", {"instrument_id": "inst-4"})
         # Warna latar dimensi harus diteruskan apa adanya dari backend.
         assert result.data[0]["background_color"] == "#FDE68A"
         assert result.data[1]["background_color"] is None
@@ -123,11 +123,11 @@ class TestInstrumentTools:
 
     @pytest.mark.asyncio
     async def test_calculate_cvi(self, respx_mock, base_url):
-        respx_mock.get(f"{base_url}/api/v1/instruments/3/cvi").mock(
+        respx_mock.get(f"{base_url}/api/v1/instruments/inst-3/cvi").mock(
             return_value=httpx.Response(200, json={"s_cvi_ave": 0.95, "items": []})
         )
         async with Client(mcp) as client:
-            result = await client.call_tool("calculate_cvi", {"instrument_id": 3})
+            result = await client.call_tool("calculate_cvi", {"instrument_id": "inst-3"})
         assert result.data["s_cvi_ave"] == 0.95
 
 

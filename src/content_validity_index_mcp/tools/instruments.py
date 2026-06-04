@@ -45,11 +45,11 @@ def register(mcp: FastMCP, client: CviApiClient) -> None:
         )
 
     @mcp.tool
-    async def get_instrument(instrument_id: int) -> dict:
+    async def get_instrument(instrument_id: str) -> dict:
         """Ambil detail satu instrumen berdasarkan ID.
 
         Args:
-            instrument_id: ID numerik instrumen.
+            instrument_id: ID (UUID) instrumen.
 
         Returns:
             Dict detail instrumen, atau dict ``error`` bila tidak ditemukan.
@@ -58,11 +58,11 @@ def register(mcp: FastMCP, client: CviApiClient) -> None:
         return unwrap(await client.get(f"/api/v1/instruments/{instrument_id}", token=token))
 
     @mcp.tool
-    async def list_instrument_items(instrument_id: int) -> dict | list:
+    async def list_instrument_items(instrument_id: str) -> dict | list:
         """Daftar item (butir) pada sebuah instrumen.
 
         Args:
-            instrument_id: ID numerik instrumen.
+            instrument_id: ID (UUID) instrumen.
 
         Returns:
             List item instrumen, atau dict ``error`` bila gagal.
@@ -71,7 +71,7 @@ def register(mcp: FastMCP, client: CviApiClient) -> None:
         return unwrap(await client.get(f"/api/v1/instruments/{instrument_id}/items", token=token))
 
     @mcp.tool
-    async def list_instrument_domains(instrument_id: int) -> dict | list:
+    async def list_instrument_domains(instrument_id: str) -> dict | list:
         """Daftar dimensi/domain (beserta definisi konstruk) pada instrumen.
 
         Setiap domain menyertakan ``background_color`` (hex ``#RRGGBB`` atau
@@ -79,7 +79,7 @@ def register(mcp: FastMCP, client: CviApiClient) -> None:
         antar-dimensi pada tabel penilaian expert.
 
         Args:
-            instrument_id: ID numerik instrumen.
+            instrument_id: ID (UUID) instrumen.
 
         Returns:
             List domain instrumen, atau dict ``error`` bila gagal.
@@ -203,14 +203,14 @@ def register(mcp: FastMCP, client: CviApiClient) -> None:
         )
 
     @mcp.tool
-    async def calculate_cvi(instrument_id: int) -> dict:
+    async def calculate_cvi(instrument_id: str) -> dict:
         """Hitung hasil Content Validity Index (CVI) sebuah instrumen.
 
         Mengembalikan I-CVI per item, S-CVI/Ave, S-CVI/UA, dan interpretasinya
         berdasarkan penilaian para expert. Memerlukan akses admin di backend.
 
         Args:
-            instrument_id: ID numerik instrumen yang akan dihitung.
+            instrument_id: ID (UUID) instrumen yang akan dihitung.
 
         Returns:
             Dict hasil kalkulasi CVI, atau dict ``error`` bila gagal/tidak
